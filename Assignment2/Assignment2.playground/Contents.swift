@@ -101,13 +101,15 @@ typealias Position = (row: Int, col: Int)
 enum CellState {
     // ** Your Problem 2 code goes here! Replace the contents of CellState **
     //  This shell code is here so that at all times the playground compiles and runs
-    case aLive
-    case burn
-    case died
-    case empty
-    
+    case aLive, born, died, empty
+
     var isAlive: Bool {
-        return false
+        switch self {
+        case .aLive, .born:
+                return true
+        default:
+                return false
+        }
     }
 }
 /*:
@@ -120,8 +122,8 @@ enum CellState {
 // A struct representing a Cell in Conway's Game of Life
 struct Cell {
     // ** Your Problem 3 code goes here! replace the following two lines **
-    var position: Position
-    var state: CellState
+    var position = (0,0)
+    var state = "empty"
 }
 /*:
  ## Problem 4:
@@ -132,28 +134,28 @@ struct Cell {
  */
 // ** Your Problem 4.1 answer goes here **
 /*
- 
+ The underscore characters indicates that the argument has no label.
  */
 /*:
  2. what is the type of the `transform` variable?
  */
 // ** Your Problem 4.2 answer goes here **
 /*
- 
+ The transform variable is of type tuple.
  */
 /*:
  3. what is the return type of `map2`?
  */
 // ** Your Problem 4.3 answer goes here **
 /*
- 
+ The return type of map2 is a set (of tuples).
  */
 /*:
  4. what is `T` in this declaration?
  */
 // ** Your Problem 4.4 answer goes here **
 /*
- 
+ T represents the tuple.
  */
 // A function which is like the standard map function but
 // which will operate only on a two dimensional array
@@ -178,7 +180,7 @@ func map2<T>(_ rows: Int, _ cols: Int, transform: (Int, Int) -> T) -> [[T]] {
 */
 // ** Your Problem 5 comment goes here! **
 /*
- 
+ The offsets represents the neighboring grid cells.
  */
 /*:
  ## Problem 6:
@@ -220,8 +222,8 @@ struct Grid {
     ]
     
     // ** Your Problem 6 code goes here! Change the following two lines **
-    var rows: Int = 0
-    var cols: Int = 0
+    var rows: Int = 10
+    var cols: Int = 10
     var cells: [[Cell]] = [[Cell]]()
     
     init(_ rows: Int,
