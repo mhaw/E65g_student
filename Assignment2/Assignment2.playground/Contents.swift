@@ -122,8 +122,8 @@ enum CellState {
 // A struct representing a Cell in Conway's Game of Life
 struct Cell {
     // ** Your Problem 3 code goes here! replace the following two lines **
-    var position = (0,0)
-    var state = "empty"
+    var position = (row: 0, col: 0)
+    var state = CellState.empty
 }
 /*:
  ## Problem 4:
@@ -141,21 +141,21 @@ struct Cell {
  */
 // ** Your Problem 4.2 answer goes here **
 /*
- The transform variable is of type tuple.
+ The transform variable is of type T.
  */
 /*:
  3. what is the return type of `map2`?
  */
 // ** Your Problem 4.3 answer goes here **
 /*
- The return type of map2 is a set (of tuples).
+ map2 returns an array of arrays of type T.
  */
 /*:
  4. what is `T` in this declaration?
  */
 // ** Your Problem 4.4 answer goes here **
 /*
- T represents the tuple.
+ T represents a generic argumement.
  */
 // A function which is like the standard map function but
 // which will operate only on a two dimensional array
@@ -230,8 +230,15 @@ struct Grid {
          _ cols: Int,
          cellInitializer: (Int, Int) -> CellState = { _,_ in .empty } ) {
         // ** Your Problem 7 code goes here! **
+        self.rows = rows
+        self.cols = cols
+        self.cells = [[Cell]](repeatElement([Cell](repeatElement(
+                Cell(), count: cols)), count: rows))
+    
+        
         map2(rows, cols) { row, col in
             // ** Your Problem 8 code goes here! **
+            var position = Position(row: rows, col: cols)
         }
     }
 }
