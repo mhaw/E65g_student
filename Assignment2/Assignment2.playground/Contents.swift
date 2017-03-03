@@ -232,13 +232,14 @@ struct Grid {
         // ** Your Problem 7 code goes here! **
         self.rows = rows
         self.cols = cols
-        self.cells = [[Cell]](repeatElement([Cell](repeatElement(
+        cells = [[Cell]](repeatElement([Cell](repeatElement(
                 Cell(), count: cols)), count: rows))
     
         
         map2(rows, cols) { row, col in
             // ** Your Problem 8 code goes here! **
-            var position = Position(row: rows, col: cols)
+            cells[row][col] = Cell(position: Position(row: row, col: col),
+                                   state: cellInitializer(row, col))
         }
     }
 }
@@ -295,7 +296,9 @@ extension Grid {
     func neighbors(of cell: Cell) -> [Position] {
         return Grid.offsets.map {
             // ** Your Problem 9 Code goes here! replace the following line **
-            return Position(row: $0, col: $1)
+            let r_neighbor = (((cell.position.row + $0) % rows) + rows) % rows
+            let c_neighbor = (((cell.position.col + $1) % cols) + cols) % cols
+            return Position(row: r_neighbor, col: c_neighbor)
         }
     }
 }
@@ -314,7 +317,7 @@ extension Grid {
  */
 // ** Your Problem 11.2 answer goes here **
 /*
- 
+ The function reduce2 ultimately returns an Int.
  */
 /*:
  3. why is there no T parameter here as in map2 above?
@@ -347,10 +350,11 @@ extension Grid {
     var numLiving: Int {
         return reduce2(self.rows, self.cols) { total, row, col in
             // ** Replace the following line with your Problem 12 code
-            return 0
+            return cells[row][col].state.isAlive ? total + 1 : total
         }
     }
 }
+
 /*:
  ## Problem 13:
  Let's test your work so far.
@@ -376,14 +380,14 @@ extension Grid {
  
  Failure to follow all rules will result in zero credit.
  */
-// Code to initialize a 10x10 grid, set up every cell in the grid
+//Code to initialize a 10x10 grid, set up every cell in the grid
 // and randomly turn each cell on or off.  Uncomment following 4 lines
 // and replace `.empty` with your one line of code
-//var grid = Grid(10, 10) { row, col in 
+var grid = Grid(10, 10) { row, col in
 //   // ** Your Problem 13 code goes here! **
-//   .empty
-//}
-//grid.numLiving
+    return arc4random_uniform(3) == 2 ? .aLive : .empty
+}
+grid.numLiving
 
 // ** Your Problem 13 comment goes here! **
 /*
@@ -413,11 +417,17 @@ extension Grid {
     subscript (row: Int, col: Int) -> Cell? {
         get {
             // ** Your Problem 14 `get` code goes here! replace the following line **
-            return nil
+            guard row >= 0 && row < rows && col >= 0 && col < cols else {
+                return nil
+            }
+            return cells[row][col]
         }
         set {
             // ** Your Problem 14 `set` code goes here! replace the following line **
-            return
+            guard (row >= 0 && row < rows && col >= 0 && col < cols) && newValue != nil else {
+                return
+            }
+            return cells[row][col] = newValue!
         }
     }
 }
@@ -504,9 +514,10 @@ extension Grid {
             .reduce(0) {
                 guard let neighborCell = self[$1.row, $1.col] else { return $0 }
                 // ** Problem 18 code goes here!  replace the following 2 lines **
-                neighborCell
-                return $0
+                return neighborCell.state.isAlive ? 1 : $0
+ 
         }
+    
     }
 }
 /*:
@@ -535,9 +546,18 @@ extension Grid {
 extension Grid {
     func nextState(of cell: Cell) -> CellState {
         // ** Problem 19 code goes here! Replace the following line **
-        return .empty
+        switch grid.livingNeighbors(of: cell) {
+        case 2 where cell.state.isAlive, 3:
+            return .aLive
+        default:
+            return .empty
+        }
+        
+        
     }
 }
+
+
 /*:
  ## Problem 20:
  In the location shown in the following extension of Grid, write precisely one line of
@@ -546,15 +566,20 @@ extension Grid {
  Conway's Game of Life using the `nextState` function from above
  */
 // An extension to grid to jump to the next state of Conway's GoL
+
 extension Grid {
     func next() -> Grid {
-        let nextGrid = Grid(rows, cols)
+        var nextGrid = Grid(rows, cols)
         map2(self.rows, self.cols) { (row, col)  in
             // ** Problem 20 code goes here! **
+            nextGrid.cells[row][col].state = nextState(of: cells[row][col])
         }
         return nextGrid
     }
 }
+
+
+print(grid.next())
 /*:
  ## Problem 21:
  Explain what nextGrid variable immediately above represents
@@ -573,8 +598,8 @@ extension Grid {
  Verify that the number living is still in the neighborhood of 33
  If it is not please debug all your code
  */
-//grid = grid.next()
-//grid.numLiving
+grid = grid.next()
+grid.numLiving
 /*:
  It works!
  ## For Fun
