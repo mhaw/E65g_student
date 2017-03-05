@@ -279,14 +279,14 @@ struct Grid {
  */
 // ** your problem 10.1 answer goes here.
 /*
- 
+ Of is an argument label, this makes the function output more expressive and readable.
  */
 /*:
  2. Explain in one sentence when you would use the word `cell` in relation to this function
  */
 // ** your problem 10.2 answer goes here.
 /*
- 
+ Cell is the parameter name, this is used in the impementation of the function.
  */
 // An extension of Grid to add a function for computing the positions
 // of the 8 neighboring cells of a given cell
@@ -310,7 +310,7 @@ extension Grid {
  */
 // ** Your Problem 11.1 answer goes here **
 /*
- 
+ I expect the combine argument to calculate the number of neighbor cells that meet certain criteria.
  */
 /*:
  2. what is the return type of reduce2?
@@ -431,6 +431,8 @@ extension Grid {
         }
     }
 }
+
+
 /*:
  The following 4 problems all refer to the extension to `Grid` immediately below
  
@@ -514,12 +516,14 @@ extension Grid {
             .reduce(0) {
                 guard let neighborCell = self[$1.row, $1.col] else { return $0 }
                 // ** Problem 18 code goes here!  replace the following 2 lines **
-                return neighborCell.state.isAlive ? 1 : $0
+                return neighborCell.state.isAlive ? $0 + 1 : $0
  
         }
     
     }
 }
+
+
 /*:
  ## Problem 19:
  In the extension to `Grid` shown below, implement a function nextState which:
@@ -569,17 +573,19 @@ extension Grid {
 
 extension Grid {
     func next() -> Grid {
-        var nextGrid = Grid(rows, cols)
+        let nextGrid = Grid(rows, cols)
         map2(self.rows, self.cols) { (row, col)  in
             // ** Problem 20 code goes here! **
-            nextGrid.cells[row][col].state = nextState(of: cells[row][col])
+            //nextGrid.cells[row][col].state = nextState(of: cells[row][col])
+            let newGrid = self.nextGrid.nextState(of: cells[row][col])
         }
-        return nextGrid
+        //return nextGrid
+        return newGrid
     }
 }
 
 
-print(grid.next())
+
 /*:
  ## Problem 21:
  Explain what nextGrid variable immediately above represents
@@ -590,7 +596,7 @@ print(grid.next())
 
 // ** Your Problem 21 comment goes here! **
 /*
- 
+ Nextgrid represents the next iteration of the grid (positions,states) baased on the state determination made by the nextState function.
  */
 /*:
  ## Problem 22:
