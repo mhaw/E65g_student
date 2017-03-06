@@ -324,7 +324,7 @@ extension Grid {
  */
 // ** Your Problem 11.3 answer goes here **
 /*
- 
+ The reduce operation is more specific, and we expect it use Ints rather than the more generalized T parameter.
  */
 
 // A function which is useful for counting things in an array of arrays of things
@@ -391,7 +391,7 @@ grid.numLiving
 
 // ** Your Problem 13 comment goes here! **
 /*
- 
+ The expression generates a random number and while over a large number of runs we would expect the average number of alive cells to be 33 but would not expect that exact number to be generated in every run.
  */
 /*:
  ## Problem 14:
@@ -442,28 +442,28 @@ extension Grid {
  */
 // Problem 15.1 answer goes here
 /*
- 
+ Cell (underlying type is a struct)
  */
 /*:
  2. what the type of `self[row,col]`?
  */
 // Problem 15.2 answer goes here
 /*
- 
+Optional Cell (underlying type is an optional struct)
  */
 /*:
  3. why those two types are different?
  */
 // Problem 15.3 comment goes here
 /*
- 
+Its technically possible that there could be a invalid grid location passed to the guard check and thus we would need to be of nil value and thus an optional type.
  */
 /*:
  4. under what circumstances will the `else` clause will be executed?
  */
 // Problem 15.4 comment goes here
 /*
- 
+ The else clause will be executed if the condition(s) outlined in the guard clause are not met.
  */
 /*:
  ## Problem 16:
@@ -491,7 +491,7 @@ extension Grid {
 
 // Problem 17 comment goes here
 /*
- 
+ $1 references the 2nd inline argument, in this case it references the neighboring cell to be checked.
  */
 
 /*:
@@ -517,7 +517,7 @@ extension Grid {
                 guard let neighborCell = self[$1.row, $1.col] else { return $0 }
                 // ** Problem 18 code goes here!  replace the following 2 lines **
                 return neighborCell.state.isAlive ? $0 + 1 : $0
- 
+
         }
     
     }
@@ -573,18 +573,17 @@ extension Grid {
 
 extension Grid {
     func next() -> Grid {
-        let nextGrid = Grid(rows, cols)
+        var nextGrid = Grid(rows, cols)
         map2(self.rows, self.cols) { (row, col)  in
             // ** Problem 20 code goes here! **
-            //nextGrid.cells[row][col].state = nextState(of: cells[row][col])
-            let newGrid = self.nextGrid.nextState(of: cells[row][col])
+            nextGrid.cells[row][col].state = nextState(of: cells[row][col])
         }
-        //return nextGrid
-        return newGrid
+        return nextGrid
+
     }
 }
 
-
+print(grid)
 
 /*:
  ## Problem 21:
