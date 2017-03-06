@@ -425,7 +425,7 @@ extension Grid {
         set {
             // ** Your Problem 14 `set` code goes here! replace the following line **
             guard (row >= 0 && row < rows && col >= 0 && col < cols) && newValue != nil else {
-                return
+                return 
             }
             return cells[row][col] = newValue!
         }
@@ -475,7 +475,7 @@ Its technically possible that there could be a invalid grid location passed to t
 
 // Problem 16 comment goes here
 /*
- 
+ The reduce function examines each of a cells neighors and then checks to make sure the location is valid and returns an aggregated total of the living neighbots.
  */
 
 /*:
@@ -610,23 +610,23 @@ grid.numLiving
  ## For Fun
  Once you have everything above working, uncomment and think about the following lines of code
  */
-//func gliderInitializer(row: Int, col: Int) -> CellState {
-//    switch (row, col) {
-//    case (0, 1), (1, 2), (2, 0), (2, 1), (2, 2): return .alive
-//    default: return .empty
-//    }
-//}
-//
-//grid = Grid(10, 10, cellInitializer: gliderInitializer)
-//grid.numLiving
-//grid = grid.next()
-//grid.numLiving
-//grid = grid.next()
-//grid.numLiving
-//grid = grid.next()
-//grid.numLiving
-//grid = grid.next()
-//grid.numLiving
-//grid = grid.next()
-//grid.numLiving
+func gliderInitializer(row: Int, col: Int) -> CellState {
+    switch (row, col) {
+    case (0, 1), (1, 2), (2, 0), (2, 1), (2, 2): return .aLive
+    default: return .empty
+    }
+}
+
+grid = Grid(10, 10, cellInitializer: gliderInitializer)
+grid.numLiving
+grid = grid.next()
+grid.numLiving
+grid = grid.next()
+grid.numLiving
+grid = grid.next()
+grid.numLiving
+grid = grid.next()
+grid.numLiving
+grid = grid.next()
+grid.numLiving
 let theEnd = "The End"
