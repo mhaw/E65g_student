@@ -45,12 +45,12 @@ public enum CellState: String {
         return allValues
     }
     
-    func toggle(value: CellState) {
+    func toggle(value: CellState) -> CellState {
         switch self {
         case .alive, .born:
-          _ =  CellState.empty
+          return .empty
         case .died, .empty:
-          _ =  CellState.alive
+          return .alive
         }
     }
     

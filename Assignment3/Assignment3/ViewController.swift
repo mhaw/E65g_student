@@ -25,6 +25,7 @@ class ViewController: UIViewController {
     @IBAction func stepGrid(_ sender: Any) {
         var iter = theGrid.grid.makeIterator()
         theGrid.grid = iter.next()!
+        theGrid.setNeedsDisplay()
     }
 
 }

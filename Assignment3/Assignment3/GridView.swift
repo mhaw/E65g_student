@@ -9,14 +9,14 @@
 import UIKit
 
 @IBDesignable class GridView: UIView {
-    
+
     @IBInspectable var size : Int = 20
-    @IBInspectable var livingColor = UIColor.green
-    @IBInspectable var emptyColor = UIColor.white
-    @IBInspectable var bornColor = UIColor.blue
-    @IBInspectable var diedColor = UIColor.black
-    @IBInspectable var gridColor = UIColor.black
-    @IBInspectable var gridwidth = CGFloat(2.0)
+    @IBInspectable var livingColor : UIColor = UIColor.green
+    @IBInspectable var emptyColor : UIColor = UIColor.white
+    @IBInspectable var bornColor : UIColor = UIColor.green
+    @IBInspectable var diedColor : UIColor = UIColor.white
+    @IBInspectable var gridColor : UIColor = UIColor.black
+    @IBInspectable var gridwidth : CGFloat = 2.0
     
     lazy var grid : Grid  = Grid(self.size, self.size)
 
@@ -51,13 +51,12 @@ import UIKit
         }
         
         (0 ..< (size + 1)).forEach { i in
-            // vertical line
+            
             drawLine(
                 start: CGPoint(x: (base.x + (CGFloat(i) * rect_size.width)), y: base.y),
                 end: CGPoint(x: (base.x + (CGFloat(i) * rect_size.width)), y: (base.y + rect.size.height))
             )
-            
-            //horizantal line
+        
             drawLine(
                 start: CGPoint(x: base.x, y: (base.y + (CGFloat(i) * rect_size.height))),
                 end: CGPoint(x: (base.x + rect.size.width), y: (base.y + (CGFloat(i) * rect_size.height)))
@@ -67,7 +66,6 @@ import UIKit
     
     func drawLine(start: CGPoint, end: CGPoint) {
         let path = UIBezierPath()
-
         path.lineWidth = CGFloat(gridwidth)
         path.move(to: start)
         path.addLine(to: end)
@@ -76,15 +74,42 @@ import UIKit
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        return
+        lastTouchedPosition = process(touches: touches)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        return
+        lastTouchedPosition = process(touches: touches)
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        return
+        lastTouchedPosition = nil
+    }
+    
+    typealias Position = (row: Int, col: Int)
+    var lastTouchedPosition: Position?
+    
+    func process(touches: Set<UITouch>) -> Position? {
+        guard touches.count == 1 else { return nil }
+        let pos = convert(touch: touches.first!)
+        guard lastTouchedPosition?.row != pos.row
+            || lastTouchedPosition?.col != pos.col
+            else { return pos }
+        
+        let r = pos.row
+        let c = pos.col
+        
+        grid[row: r, col: c] = grid[row: r, col: c].toggle(value: grid[row: r, col: c])
+        setNeedsDisplay()
+        return pos
+    }
+    
+    func convert(touch: UITouch) -> Position {
+        
+        let row = touch.location(in:self).x / (frame.size.width / CGFloat(size))
+        let col = touch.location(in:self).y / (frame.size.height / CGFloat(size))
+
+        let position = (row: Int(row), col: Int(col))
+        return position
     }
     
 }
