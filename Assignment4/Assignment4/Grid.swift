@@ -140,4 +140,28 @@ public extension Grid {
         default: return .empty
         }
     }
+    
+
+}
+
+protocol EngineDelegate {
+    func engineDidUpdate(withGrid: GridProtocol)
+}
+
+protocol EngineProtocol {
+    var grid: GridProtocol {get}
+    var delegate: EngineDelegate? {get set}
+    
+    var refreshRate: Double = 0.0 {get set}
+    
+    var refreshTimer: NSTime {get set}
+    
+    var rows: Int {get set}
+    
+    var cols: Int {get set}
+    
+    init(rows: Int, cols: Int)
+    
+    func step() -> GridProtocol
+    
 }
