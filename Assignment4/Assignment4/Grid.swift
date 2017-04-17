@@ -152,9 +152,9 @@ protocol EngineProtocol {
     var grid: GridProtocol {get}
     var delegate: EngineDelegate? {get set}
     
-    var refreshRate: Double = 0.0 {get set}
+    var refreshRate: Double {get set}
     
-    var refreshTimer: NSTime {get set}
+    var refreshTimer: Timer? {get set}
     
     var rows: Int {get set}
     
@@ -163,5 +163,9 @@ protocol EngineProtocol {
     init(rows: Int, cols: Int)
     
     func step() -> GridProtocol
+    
+}
+
+class StandardEngine: EngineProtocol {
     
 }

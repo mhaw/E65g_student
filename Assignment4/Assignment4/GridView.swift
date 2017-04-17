@@ -36,7 +36,7 @@ import UIKit
                 )
                 let subRect = CGRect(origin: origin, size: rect_size)
                 
-                let cellState = grid[Position(i,j)]
+                let cellState = StandardEngine.grid[Position(i,j)]
                 
                 switch cellState {
                     case .alive: livingColor.setFill()
@@ -98,7 +98,7 @@ import UIKit
         let r = pos.row
         let c = pos.col
         
-        grid[row: r, col: c] = grid[row: r, col: c].toggle(value: grid[row: r, col: c])
+        StandardEngine.grid[row: r, col: c] = grid[row: r, col: c].toggle(value: grid[row: r, col: c])
         setNeedsDisplay()
         return pos
     }
