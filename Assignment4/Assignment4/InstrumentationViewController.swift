@@ -20,10 +20,25 @@ class InstrumentationViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    
-    
-    
-    //testing
+    @IBAction func time_refresh(_ sender: Any) {
+    }
 
+    @IBAction func refresh_rate(_ sender: Any) {
+    }
+    
+    @IBAction func col_step(_ sender: Any) {
+    }
+    
+    @IBAction func col_text(_ sender: Any) {
+    }
+    
+    @IBAction func row_step(_ sender: Any) {
+    }
+    
+    
+    @IBAction func row_text(_ sender: Any) {
+    }
+    
+    
 }
 

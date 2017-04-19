@@ -20,6 +20,12 @@ class StatisticsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    @IBOutlet weak var alive_count: UITextField!
 
+    @IBOutlet weak var empty_count: UITextField!
+    
+    @IBOutlet weak var born_count: UITextField!
+    
+    @IBOutlet weak var died_count: UITextField!
 }
 

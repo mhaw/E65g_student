@@ -1,6 +1,8 @@
 //
 //  Grid.swift
 //
+import Foundation
+
 public typealias GridPosition = (row: Int, col: Int)
 public typealias GridSize = (rows: Int, cols: Int)
 
@@ -168,4 +170,44 @@ protocol EngineProtocol {
 
 class StandardEngine: EngineProtocol {
     
+    var engine : StandardEngine = StandardEngine(rows: 10, cols: 10)
+    
+    var grid: Grid
+    
+    var delegate: EngineDelegate?
+    
+    var updateClosure: ((Grid) -> Void)?
+    
+    var refreshTimer: Timer?
+    
+    var refreshRate: Double: TimeInterval = 0.0 {
+        didSet {
+            if timerInterval > 0.0 {
+                refreshTimer = Timer.scheduledTimer(
+                    withTimeInterval: refreshRate,
+                    repeats: true
+                ) { (t: Timer) in
+                    _ = self.step()
+                }
+            }
+            else {
+                refreshTimer?.invalidate()
+                refreshTimer = nil
+        }
+    }
+    }
+
+
+    init(rows: Int, cols: Int) {
+        self.grid = Grid(rows, cols, cellInitializer: { _,_ in .empty })
+        rows = rows
+        cols = cols
+        delegate?.engineDidUpdate(withGrid: self.grid)
+    }
+
+    func step() -> GridProtocol {
+        let newGrid = grid.next()
+        delegate?.engineDidUpdate(withGrid: grid)
+        return grid
+    }
 }
