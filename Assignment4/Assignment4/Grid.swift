@@ -180,9 +180,9 @@ class StandardEngine: EngineProtocol {
     
     var refreshTimer: Timer?
     
-    var refreshRate: Double: TimeInterval = 0.0 {
+    var refreshRate: TimeInterval = 0.0 {
         didSet {
-            if timerInterval > 0.0 {
+            if refreshRate > 0.0 {
                 refreshTimer = Timer.scheduledTimer(
                     withTimeInterval: refreshRate,
                     repeats: true
@@ -198,11 +198,8 @@ class StandardEngine: EngineProtocol {
     }
 
 
-    init(rows: Int, cols: Int) {
+    required init(rows: Int, cols: Int) {
         self.grid = Grid(rows, cols, cellInitializer: { _,_ in .empty })
-        rows = rows
-        cols = cols
-        delegate?.engineDidUpdate(withGrid: self.grid)
     }
 
     func step() -> GridProtocol {
