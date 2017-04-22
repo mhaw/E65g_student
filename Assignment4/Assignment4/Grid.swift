@@ -70,7 +70,7 @@ extension GridProtocol {
     }
 }
 
-public struct Grid: GridProtocol {
+public struct Grid: GridProtocol, GridViewDataSource {
     private var _cells: [[CellState]]
     public let size: GridSize
 
@@ -146,41 +146,50 @@ public extension Grid {
 
 }
 
-protocol EngineDelegate {
+public protocol EngineDelegate {
     func engineDidUpdate(withGrid: GridProtocol)
 }
 
-protocol EngineProtocol {
-    var grid: GridProtocol {get}
-    var delegate: EngineDelegate? {get set}
+public protocol EngineProtocol {
+    var grid: GridProtocol { get set }
     
-    var refreshRate: Double {get set}
+    var delegate: EngineDelegate? { get set }
     
-    var refreshTimer: Timer? {get set}
+    var refreshRate: Double { get set }
     
-    var rows: Int {get set}
+    var refreshTimer: Timer? { get set }
     
-    var cols: Int {get set}
+    var updateClosure: ((Grid) -> Void)? { get set }
     
-    init(rows: Int, cols: Int)
+    var rows: Int { get set }
+    
+    var cols: Int { get set }
+    
+    init(_ rows: Int, _ cols: Int)
     
     func step() -> GridProtocol
     
 }
 
-class StandardEngine: EngineProtocol {
+public class StandardEngine: EngineProtocol {
+ 
+   static let engine : StandardEngine = StandardEngine(10, 10)
     
-    var engine : StandardEngine = StandardEngine(rows: 10, cols: 10)
+    public var grid: GridProtocol {
+        didSet {
+            guard (rows != grid.size.rows) else { return }
+            rows = grid.size.rows
+            cols = grid.size.cols
+        }
+    }
     
-    var grid: Grid
+    public var delegate: EngineDelegate?
     
-    var delegate: EngineDelegate?
+    public var updateClosure: ((Grid) -> Void)?
     
-    var updateClosure: ((Grid) -> Void)?
+    public var refreshTimer: Timer?
     
-    var refreshTimer: Timer?
-    
-    var refreshRate: TimeInterval = 0.0 {
+    public var refreshRate: TimeInterval = 0.0 {
         didSet {
             if refreshRate > 0.0 {
                 refreshTimer = Timer.scheduledTimer(
@@ -196,15 +205,23 @@ class StandardEngine: EngineProtocol {
         }
     }
     }
-
-
-    required init(rows: Int, cols: Int) {
+    
+    public var rows: Int
+    
+    public var cols: Int
+    
+    public required init(_ rows: Int, _ cols: Int) {
+        self.rows = rows
+        self.cols = cols
         self.grid = Grid(rows, cols, cellInitializer: { _,_ in .empty })
+        delegate?.engineDidUpdate(withGrid: self.grid)
+
     }
 
-    func step() -> GridProtocol {
+    public func step() -> GridProtocol {
         let newGrid = grid.next()
         delegate?.engineDidUpdate(withGrid: grid)
-        return grid
+        return newGrid
+        
     }
 }

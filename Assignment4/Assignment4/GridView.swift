@@ -1,6 +1,6 @@
 //
 //  GridView.swift
-//  Assignment3
+//  Assignment4
 //
 //  Created by Mike Haw on 3/15/17.
 //  Copyright © 2017 Harvard Division of Continuing Education. All rights reserved.
@@ -8,8 +8,12 @@
 
 import UIKit
 
-@IBDesignable class GridView: UIView {
+public protocol GridViewDataSource {
+    subscript (row: Int, col: Int) -> CellState { get set }
+}
 
+@IBDesignable class GridView: UIView {
+    
     @IBInspectable var size : Int = 20
     @IBInspectable var livingColor : UIColor = UIColor.green
     @IBInspectable var emptyColor : UIColor = UIColor.white
@@ -18,7 +22,9 @@ import UIKit
     @IBInspectable var gridColor : UIColor = UIColor.black
     @IBInspectable var gridwidth : CGFloat = 2.0
     
-    lazy var grid : Grid  = Grid(self.size, self.size)
+    var gridDataSource: GridViewDataSource?
+    
+    var engine: StandardEngine = StandardEngine.engine
 
     override func draw(_ rect: CGRect) {
         let rect_size = CGSize(
@@ -36,13 +42,13 @@ import UIKit
                 )
                 let subRect = CGRect(origin: origin, size: rect_size)
                 
-                let cellState = StandardEngine.grid[Position(i,j)]
+                let cellState = StandardEngine.engine.grid[i,j]
                 
                 switch cellState {
-                    case .alive: livingColor.setFill()
-                    case .empty: emptyColor.setFill()
-                    case .born: bornColor.setFill()
-                    case .died: diedColor.setFill()
+                case .alive: livingColor.setFill()
+                case .empty: emptyColor.setFill()
+                case .born: bornColor.setFill()
+                case .died: diedColor.setFill()
                 }
                 
                 let path = UIBezierPath(ovalIn: subRect)
@@ -56,7 +62,7 @@ import UIKit
                 start: CGPoint(x: (base.x + (CGFloat(i) * rect_size.width)), y: base.y),
                 end: CGPoint(x: (base.x + (CGFloat(i) * rect_size.width)), y: (base.y + rect.size.height))
             )
-        
+            
             drawLine(
                 start: CGPoint(x: base.x, y: (base.y + (CGFloat(i) * rect_size.height))),
                 end: CGPoint(x: (base.x + rect.size.width), y: (base.y + (CGFloat(i) * rect_size.height)))
@@ -98,7 +104,7 @@ import UIKit
         let r = pos.row
         let c = pos.col
         
-        StandardEngine.grid[row: r, col: c] = grid[row: r, col: c].toggle(value: grid[row: r, col: c])
+        StandardEngine.engine.grid[r, c] = StandardEngine.engine.grid[r, c].isAlive ? .empty : .alive
         setNeedsDisplay()
         return pos
     }
@@ -107,7 +113,7 @@ import UIKit
         
         let row = touch.location(in:self).x / (frame.size.width / CGFloat(size))
         let col = touch.location(in:self).y / (frame.size.height / CGFloat(size))
-
+        
         let position = (row: Int(row), col: Int(col))
         return position
     }
