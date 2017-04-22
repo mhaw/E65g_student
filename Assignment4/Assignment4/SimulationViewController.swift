@@ -41,6 +41,7 @@ class SimulationViewController: UIViewController, GridViewDataSource, EngineDele
         self.gridView.setNeedsDisplay()
     }
     
+    
     public subscript (row: Int, col: Int) -> CellState {
         get { return engine.grid[row,col] }
         set { engine.grid[row,col] = newValue }
@@ -52,7 +53,8 @@ class SimulationViewController: UIViewController, GridViewDataSource, EngineDele
     }
     
     @IBAction func step(_ sender: Any) {
-        _ = engine.step()
+        engine.grid = engine.grid.next()
+        gridView.setNeedsDisplay()
     }
     
 

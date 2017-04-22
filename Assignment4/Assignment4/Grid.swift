@@ -220,8 +220,9 @@ public class StandardEngine: EngineProtocol {
 
     public func step() -> GridProtocol {
         let newGrid = grid.next()
+        grid = newGrid
         delegate?.engineDidUpdate(withGrid: grid)
-        return newGrid
+        return grid
         
     }
 }
