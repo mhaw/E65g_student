@@ -17,9 +17,6 @@ public protocol GridViewDataSource {
     
     
     @IBInspectable var gridSize = Int(StandardEngine.engine.size)
-    
-    
-    
     @IBInspectable var livingColor : UIColor = UIColor.green
     @IBInspectable var emptyColor : UIColor = UIColor.white
     @IBInspectable var bornColor : UIColor = UIColor.green
