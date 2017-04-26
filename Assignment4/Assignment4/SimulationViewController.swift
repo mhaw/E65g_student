@@ -2,11 +2,13 @@
 //  SecondViewController.swift
 //  Assignment4
 //
-//  Created by Van Simmons on 1/15/17.
+//  Created by Joseph (Mike) Haw on 4/25/2017.
 //  Copyright © 2017 Harvard Division of Continuing Education. All rights reserved.
+//  Icon(s) courtesy of Freepik from www.flaticon.com
 //
 
 import UIKit
+import Foundation
 
 class SimulationViewController: UIViewController, GridViewDataSource, EngineDelegate {
     
@@ -15,16 +17,17 @@ class SimulationViewController: UIViewController, GridViewDataSource, EngineDele
     
     var engine: EngineProtocol!
     var timer: Timer?
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let size = gridView.size
-        engine = StandardEngine(size, size)
+        
+
+        engine = StandardEngine.engine
         engine.delegate = self
-        engine.updateClosure = { (grid) in
-            self.gridView.setNeedsDisplay()
-        }
         gridView.gridDataSource = self
+        gridView.gridSize = engine.grid.size.cols
+        
         
         let nc = NotificationCenter.default
         let name = Notification.Name(rawValue: "EngineUpdate")
@@ -32,19 +35,22 @@ class SimulationViewController: UIViewController, GridViewDataSource, EngineDele
             forName: name,
             object: nil,
             queue: nil) { (n) in
-                self.gridView.setNeedsDisplay()
+            self.gridView.gridSize = self.engine.cols
+            self.gridView.setNeedsDisplay()
         }
-        
+        StandardEngine.engine.delegate = self
+
     }
     
+
     func engineDidUpdate(withGrid: GridProtocol) {
         self.gridView.setNeedsDisplay()
     }
     
     
     public subscript (row: Int, col: Int) -> CellState {
-        get { return engine.grid[row,col] }
-        set { engine.grid[row,col] = newValue }
+        get { return StandardEngine.engine.grid[row,col] }
+        set { StandardEngine.engine.grid[row,col] = newValue }
     }
 
     override func didReceiveMemoryWarning() {
@@ -53,11 +59,9 @@ class SimulationViewController: UIViewController, GridViewDataSource, EngineDele
     }
     
     @IBAction func step(_ sender: Any) {
-        engine.grid = engine.grid.next()
+        StandardEngine.engine.grid = StandardEngine.engine.grid.next()
+        StandardEngine.engine.updateClosure?(StandardEngine.engine.grid as! Grid)
         gridView.setNeedsDisplay()
     }
     
-
-
 }
-

@@ -1,6 +1,9 @@
 //
 //  Grid.swift
 //
+//  Created by Joseph (Mike) Haw on 4/25/2017.
+//  Icon(s) courtesy of Freepik from www.flaticon.com
+//
 import Foundation
 
 public typealias GridPosition = (row: Int, col: Int)
@@ -128,6 +131,12 @@ extension Grid: Sequence {
             let newGrid:Grid = grid.next() as! Grid
             history = GridHistory(newGrid.living, history)
             grid = newGrid
+            let nc = NotificationCenter.default
+            let name = Notification.Name(rawValue: "EngineUpdate")
+            let n = Notification(name: name,
+                                 object: nil,
+                                 userInfo: ["engine" : self])
+            nc.post(n)
             return grid
         }
     }
@@ -210,19 +219,43 @@ public class StandardEngine: EngineProtocol {
     
     public var cols: Int
     
+    public var size : Int {
+        didSet {
+            self.rows = size
+            self.cols = size
+            self.grid = Grid(rows, cols)
+            delegate?.engineDidUpdate(withGrid: grid)
+            self.notify()
+            
+        }
+    }
+    
     public required init(_ rows: Int, _ cols: Int) {
+        self.size = 10
         self.rows = rows
         self.cols = cols
-        self.grid = Grid(rows, cols, cellInitializer: { _,_ in .empty })
+        self.grid = Grid(rows, cols)
         delegate?.engineDidUpdate(withGrid: self.grid)
+        self.notify()
 
     }
 
     public func step() -> GridProtocol {
         let newGrid = grid.next()
         grid = newGrid
+        updateClosure?(self.grid as! Grid)
         delegate?.engineDidUpdate(withGrid: grid)
+        self.notify()
         return grid
         
+    }
+    
+    public func notify() {
+        let nc = NotificationCenter.default
+        let name = Notification.Name(rawValue: "EngineUpdate")
+        let n = Notification(name: name,
+                             object: nil,
+                             userInfo: ["engine" : self])
+        nc.post(n)
     }
 }

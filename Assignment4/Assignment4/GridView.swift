@@ -2,8 +2,9 @@
 //  GridView.swift
 //  Assignment4
 //
-//  Created by Mike Haw on 3/15/17.
+//  Created by Joseph (Mike) Haw on 4/25/2017.
 //  Copyright © 2017 Harvard Division of Continuing Education. All rights reserved.
+//  Icon(s) courtesy of Freepik from www.flaticon.com
 //
 
 import UIKit
@@ -14,7 +15,11 @@ public protocol GridViewDataSource {
 
 @IBDesignable class GridView: UIView {
     
-    @IBInspectable var size : Int = 20
+    
+    @IBInspectable var gridSize = Int(StandardEngine.engine.size)
+    
+    
+    
     @IBInspectable var livingColor : UIColor = UIColor.green
     @IBInspectable var emptyColor : UIColor = UIColor.white
     @IBInspectable var bornColor : UIColor = UIColor.green
@@ -23,19 +28,18 @@ public protocol GridViewDataSource {
     @IBInspectable var gridwidth : CGFloat = 2.0
     
     var gridDataSource: GridViewDataSource?
-    
-    var engine: StandardEngine = StandardEngine.engine
 
     override func draw(_ rect: CGRect) {
+        
         let rect_size = CGSize(
-            width: rect.size.width / CGFloat(size),
-            height: rect.size.height / CGFloat(size)
+            width: rect.size.width / CGFloat(gridSize),
+            height: rect.size.height / CGFloat(gridSize)
         )
         
         let base = rect.origin
         
-        (0 ..< size).forEach { i in
-            (0 ..< size).forEach { j in
+        (0 ..< gridSize).forEach { i in
+            (0 ..< gridSize).forEach { j in
                 let origin = CGPoint(
                     x: base.x + (CGFloat(i) * rect_size.width),
                     y: base.y + (CGFloat(j) * rect_size.height)
@@ -56,7 +60,7 @@ public protocol GridViewDataSource {
             }
         }
         
-        (0 ..< (size + 1)).forEach { i in
+        (0 ..< (gridSize + 1)).forEach { i in
             
             drawLine(
                 start: CGPoint(x: (base.x + (CGFloat(i) * rect_size.width)), y: base.y),
@@ -91,10 +95,10 @@ public protocol GridViewDataSource {
         lastTouchedPosition = nil
     }
     
-    typealias Position = (row: Int, col: Int)
-    var lastTouchedPosition: Position?
+    typealias GridPosition = (row: Int, col: Int)
+    var lastTouchedPosition: GridPosition?
     
-    func process(touches: Set<UITouch>) -> Position? {
+    func process(touches: Set<UITouch>) -> GridPosition? {
         guard touches.count == 1 else { return nil }
         let pos = convert(touch: touches.first!)
         guard lastTouchedPosition?.row != pos.row
@@ -109,13 +113,15 @@ public protocol GridViewDataSource {
         return pos
     }
     
-    func convert(touch: UITouch) -> Position {
+    func convert(touch: UITouch) -> GridPosition {
         
-        let row = touch.location(in:self).x / (frame.size.width / CGFloat(size))
-        let col = touch.location(in:self).y / (frame.size.height / CGFloat(size))
+        let row = touch.location(in:self).x / (frame.size.width / CGFloat(gridSize))
+        let col = touch.location(in:self).y / (frame.size.height / CGFloat(gridSize))
         
         let position = (row: Int(row), col: Int(col))
         return position
     }
+    
+
     
 }
