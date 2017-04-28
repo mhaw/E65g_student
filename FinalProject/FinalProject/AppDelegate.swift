@@ -1,9 +1,11 @@
 //
 //  AppDelegate.swift
-//  FinalProject
+//  Assignment4
 //
 //  Created by Van Simmons on 1/15/17.
 //  Copyright © 2017 Harvard Division of Continuing Education. All rights reserved.
+//
+//  Icon(s) made by Freepik from www.flaticon.com
 //
 
 import UIKit
