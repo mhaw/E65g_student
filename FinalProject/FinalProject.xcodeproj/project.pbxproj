@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D20E724B1EB82FDA0094653A /* Fetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20E724A1EB82FDA0094653A /* Fetcher.swift */; };
 		D23D84CB1EB1542100BA5282 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23D84C61EB1542100BA5282 /* Grid.swift */; };
 		D23D84CC1EB1542100BA5282 /* GridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23D84C71EB1542100BA5282 /* GridView.swift */; };
 		D23D84CD1EB1542100BA5282 /* InstrumentationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D23D84C81EB1542100BA5282 /* InstrumentationViewController.swift */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D20E724A1EB82FDA0094653A /* Fetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fetcher.swift; sourceTree = "<group>"; };
 		D23D84C61EB1542100BA5282 /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		D23D84C71EB1542100BA5282 /* GridView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridView.swift; sourceTree = "<group>"; };
 		D23D84C81EB1542100BA5282 /* InstrumentationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstrumentationViewController.swift; sourceTree = "<group>"; };
@@ -68,6 +70,7 @@
 				D23D84C71EB1542100BA5282 /* GridView.swift */,
 				D23D84C81EB1542100BA5282 /* InstrumentationViewController.swift */,
 				D23D84D01EB2F2A600BA5282 /* GridEditorViewController.swift */,
+				D20E724A1EB82FDA0094653A /* Fetcher.swift */,
 				D23D84C91EB1542100BA5282 /* SimulationViewController.swift */,
 				D23D84CA1EB1542100BA5282 /* StatisticsViewController.swift */,
 				FBAD2E261E2BE417008207C0 /* AppDelegate.swift */,
@@ -153,6 +156,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FBAD2E271E2BE417008207C0 /* AppDelegate.swift in Sources */,
+				D20E724B1EB82FDA0094653A /* Fetcher.swift in Sources */,
 				D23D84CD1EB1542100BA5282 /* InstrumentationViewController.swift in Sources */,
 				D23D84CC1EB1542100BA5282 /* GridView.swift in Sources */,
 				D23D84CF1EB1542100BA5282 /* StatisticsViewController.swift in Sources */,

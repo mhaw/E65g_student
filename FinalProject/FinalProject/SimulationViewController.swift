@@ -59,12 +59,50 @@ class SimulationViewController: UIViewController, GridViewDataSource, EngineDele
     }
     
     @IBAction func save(_ sender: Any) {
+        let nameEntry = UIAlertController(title:"Enter new grid name:", message: nil, preferredStyle: .alert)
         
+        let save = UIAlertAction(title: "Save", style: .default) { (_) in
+            if let new_name = nameEntry.textFields?[0] {
+                if let name = new_name.text {
+                    let cellpositions = self.gridView.countAlive()
+                    let size = self.engine.grid.size.cols
+                    
+                    let savedState = UserDefaults.standard
+                    savedState.setValue(name, forKey: "savedName")
+                    savedState.setValue(cellpositions, forKey: "savedGrid")
+                    savedState.setValue(size, forKey: "savedSize")
+                    
+                    print(cellpositions)
+                }
+                
+            
+                
+            }
+        }
+        
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (_) in
+            
+        }
+        
+        nameEntry.addTextField { textentry in
+            textentry.placeholder = "Grid Name"
+        }
+        
+        nameEntry.addAction(save)
+        nameEntry.addAction(cancel)
+        
+        present(nameEntry, animated: true)
+
     }
     
+
     @IBAction func reset(_ sender: Any) {
-        
+        StandardEngine.engine.grid = StandardEngine.engine.grid.resetGrid()
+        StandardEngine.engine.updateClosure?(StandardEngine.engine.grid as! Grid)
+        gridView.setNeedsDisplay()
     }
+
     
     @IBAction func step(_ sender: Any) {
         StandardEngine.engine.grid = StandardEngine.engine.grid.next()

@@ -38,70 +38,114 @@ var data = [
     ]
 ]
 
-class InstrumentationViewController: UIViewController, EngineDelegate, UITableViewDelegate, UITableViewDataSource {
+class InstrumentationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var refreshSlider: UISlider!
     @IBOutlet weak var refreshSwitch: UISwitch!
     
-    var engine: EngineProtocol = StandardEngine.engine
-
     @IBOutlet weak var grid_size: UITextField!
-
+    @IBOutlet weak var tableview: UITableView!
     
+    var engine: EngineProtocol = StandardEngine.engine
+    
+    let finalProjectURL = "https://dl.dropboxusercontent.com/u/7544475/S65g.json"
+    
+    var gridTitles: [String] = []
+    var gridAlives: [[[Int]]] = []
+    var gridSizes: [Int] = []
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        engine.delegate = self
-        // Do any additional setup after loading the view, typically from a nib.
         
+        let fetcher = Fetcher()
+        fetcher.fetchJSON(url: URL(string:finalProjectURL)!) { (json: Any?, message: String?) in
+            guard message == nil else {
+                print(message ?? "nil")
+                return
+            }
+            guard let json = json else {
+                print("no json")
+                return
+            }
+            print(json)
+            //let resultString = (json as AnyObject).description
+            
+            let jsonArray = json as! NSArray
+            
+            for i in 0..<jsonArray.count {
+                let jsonDictionary = jsonArray[i] as! NSDictionary
+                let jsonTitle = jsonDictionary["title"] as! String
+                let jsonContents = jsonDictionary["contents"] as! [[Int]]
+                
+                self.gridTitles.append(jsonTitle)
+                self.gridAlives.append(jsonContents)
+                
+                var maxArray: [Int] = []
+                
+                for i in 0..<jsonContents.count {
+                    maxArray.append(jsonContents[i][0])
+                    maxArray.append(jsonContents[i][1])
+                }
+                
+                self.gridSizes.append(maxArray.max()!)
+                
+            }
+            
+            OperationQueue.main.addOperation {
+                self.tableview.reloadData()
+            }
+            
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        navigationController?.isNavigationBarHidden = true
+        super.viewWillAppear(animated)
+        //navigationController?.isNavigationBarHidden = false
+        
     }
     
-    @IBOutlet weak var tableview: UITableView!
-    
-
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return data.count
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data[section].count
+        return gridTitles.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let identifier = "basic"
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
         let label = cell.contentView.subviews.first as! UILabel
-        label.text = data[indexPath.section][indexPath.item]
+        //label.text = data[indexPath.section][indexPath.item]
+        
+        label.text = gridTitles[indexPath.item]
         
         return cell
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sectionHeaders[section]
-    }
+//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        
+//        return sectionHeaders[section]
+//    }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            var newData = data[indexPath.section]
-            newData.remove(at: indexPath.row)
-            data[indexPath.section] = newData
-            tableView.deleteRows(at: [indexPath], with: .automatic)
-            tableView.reloadData()
-        }
-    }
+//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+//        if editingStyle == .delete {
+//            var newData = data[indexPath.section]
+//            newData.remove(at: indexPath.row)
+//            data[indexPath.section] = newData
+//            tableView.deleteRows(at: [indexPath], with: .automatic)
+//            tableView.reloadData()
+//        }
+//    }
 
     @IBAction func time_refresh(_ sender: UISlider) {
         if refreshSwitch.isOn {
-            StandardEngine.engine.refreshRate = (Double(refreshSlider.value) * 10)
+            StandardEngine.engine.refreshRate = 1 / (Double(refreshSlider.value))
         } else {
             StandardEngine.engine.refreshRate = 0.0
         }
@@ -128,19 +172,29 @@ class InstrumentationViewController: UIViewController, EngineDelegate, UITableVi
         
     }
     
-    override func prepare(for seque: UIStoryboardSegue, sender: Any?) {
-        let selectedIndexPath = tableview.indexPathForSelectedRow
-        if let selectedIndexPath = selectedIndexPath {
-            let grid_array = data[selectedIndexPath.section][selectedIndexPath.row]
-            if let vc = seque.destination as? GridEditorViewController {
-                vc.grid_array = grid_array
-                vc.saveClosure = { newValue in
-                    data[indexPath.section][indexPath.row] = newValue
-                    self.tableView.reloadData()
-            
-        }
+    @IBAction func add(_ sender: Any) {
         
     }
+    
+    
+    override func prepare(for seque: UIStoryboardSegue, sender: Any?) {
+        let indexPath = tableview.indexPathForSelectedRow
+        if let indexPath = indexPath {
+            let loadGrid = gridAlives[indexPath.row]
+            let loadName = gridTitles[indexPath.row]
+            let loadSize = gridSizes[indexPath.row]
+            
+            if let vc = seque.destination as? GridEditorViewController {
+                
+                vc.saveClosure = { newValue in
+                    vc.loadGrid = loadGrid
+                    vc.loadName = loadName
+                    vc.loadSize = loadSize
+                    vc.tableRow = indexPath.row
+                }
+            }
+        }
+        }
 
 }
     

@@ -71,6 +71,12 @@ extension GridProtocol {
         lazyPositions(self.size).forEach { nextGrid[$0.row, $0.col] = self.nextState(of: $0) }
         return nextGrid
     }
+    
+    public func resetGrid() -> Self {
+        let nextGrid = Self(size.rows, size.cols) { _, _ in .empty }
+        return nextGrid
+    }
+    
 }
 
 public struct Grid: GridProtocol, GridViewDataSource {
@@ -256,5 +262,18 @@ public class StandardEngine: EngineProtocol {
                              object: nil,
                              userInfo: ["engine" : self])
         nc.post(n)
+    }
+    
+    public func populate(gridLayout: [[Int]], title: String, size: Int) {
+        print(gridLayout)
+        var startingGrid = Grid(size, size, cellInitializer: {_,_ in .empty})
+        
+        for cell in gridLayout {
+            let row = cell[0]
+            let col = cell[1]
+            startingGrid[row,col] = CellState.alive
+        }
+        
+        StandardEngine.engine.grid = startingGrid
     }
 }

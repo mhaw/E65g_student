@@ -8,16 +8,30 @@
 
 import UIKit
 
-class GridEditorViewController: UIViewController {
+class GridEditorViewController: UIViewController, GridViewDataSource {
     
+    
+    var loadGrid: [[Int]] = []
+    var loadName: String = ""
+    var loadSize: Int = 0
+    var tableRow: Int = 0
     var saveClosure: ((GridView) -> Void)?
     
-    var grid_array: GridView
+    var editEngine : StandardEngine = StandardEngine.engine
+    
+    @IBOutlet weak var editGridView: GridView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        editEngine.populate(gridLayout: loadGrid, title: loadName, size: 10+loadSize)
+        
+        editGridView.gridDataSource = self
+        
         navigationController?.isNavigationBarHidden = false
         // Do any additional setup after loading the view.
+        
+        editGridView.setNeedsDisplay()
     }
 
     override func didReceiveMemoryWarning() {
@@ -26,15 +40,20 @@ class GridEditorViewController: UIViewController {
     }
     
     @IBAction func save(_ sender: GridView) {
-        if let newValue = grid_array {
-            let saveClosure = self.saveClosure {
-            self.saveClosure(newValue)
-            self.navigationController?.popViewController(animated: true)
-        }
+        //if let newValue = grid_array {
+            //let saveClosure = self.saveClosure {
+            //self.saveClosure(newValue)
+            //self.navigationController?.popViewController(animated: true)
+        //}
     }
-    }
+
     
     @IBOutlet weak var grid_edit: GridView!
+    
+    public subscript(row: Int, col: Int) -> CellState {
+        get { return editEngine.grid[row,col] }
+        set { editEngine.grid[row,col] = newValue }
+    }
     
 
     /*

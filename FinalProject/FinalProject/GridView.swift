@@ -119,6 +119,23 @@ public protocol GridViewDataSource {
         return position
     }
     
+    public func countAlive() -> [[Int]] {
+        var alives: [[Int]] = []
+        
+        let this_engine = StandardEngine.engine
+        
+        (0 ..< this_engine.grid.size.rows).forEach { row in
+            (0 ..< this_engine.grid.size.cols).forEach { col in
+                let cell = this_engine.grid[row,col]
+                if(cell.isAlive) {
+                    alives.append([row,col])
+                }
+            }
+        }
+        return alives
+    }
+    
+    
 
     
 }
