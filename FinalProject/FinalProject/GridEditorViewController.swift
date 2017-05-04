@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GridEditorViewController: UIViewController, GridViewDataSource {
+class GridEditorViewController: UIViewController, GridViewDataSource, EngineDelegate {
     
     
     var loadGrid: [[Int]] = []
@@ -24,19 +24,26 @@ class GridEditorViewController: UIViewController, GridViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print (loadGrid)
+        
         editEngine.populate(gridLayout: loadGrid, title: loadName, size: 10+loadSize)
         
-        editGridView.gridDataSource = self
-        
         navigationController?.isNavigationBarHidden = false
-        // Do any additional setup after loading the view.
         
-        editGridView.setNeedsDisplay()
+        editEngine.delegate = self
+        self.editGridView.gridSize = 10+loadSize
+        self.editGridView.gridDataSource = (editEngine.grid as! GridViewDataSource)
+
+        self.editGridView.setNeedsDisplay()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func engineDidUpdate(withGrid: GridProtocol) {
+        self.editGridView.setNeedsDisplay()
     }
     
     @IBAction func save(_ sender: GridView) {

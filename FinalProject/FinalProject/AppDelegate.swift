@@ -17,15 +17,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        print("loaded!!")
+        
         let defaults = UserDefaults.standard
         
-        guard let positions = defaults.object(forKey: "savedGrid") else { return true }
+
+        
+        //guard let positions = defaults.object(forKey: "savedGrid") else { return true }
             
-        guard let name = defaults.object(forKey: "savedName") else { return true }
+        //guard let name = defaults.object(forKey: "savedName") else { return true }
         
-        guard let size = defaults.object(forKey: "SavedSize") else { return true }
+        //guard let size = defaults.object(forKey: "SavedSize") else { return true }
+        if let positions = defaults.object(forKey: "savedGrid"), let name = defaults.object(forKey: "savedName"), let size = defaults.object(forKey: "SavedSize") {
+            StandardEngine.engine.populate(gridLayout: positions as! [[Int]], title: name as! String, size: size as! Int)
+        }
         
-        StandardEngine.engine.populate(gridLayout: positions as! [[Int]], title: name as! String, size: size as! Int)
         
         return true
     }

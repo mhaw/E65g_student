@@ -9,34 +9,7 @@
 
 import UIKit
 
-var sectionHeaders = [
-    "One", "Two", "Three", "Four"
-]
 
-var data = [
-    [
-        "Apple",
-        "Banana"
-
-    ],
-    [
-        "Kiwi",
-        "Apple",
-        "Banana"
-
-    ],
-    [
-        "Cherry",
-        "Date",
-        "Kiwi"
-    ],
-    [
-        "Date",
-        "Kiwi",
-        "Apple"
-
-    ]
-]
 
 class InstrumentationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -67,8 +40,7 @@ class InstrumentationViewController: UIViewController, UITableViewDelegate, UITa
                 print("no json")
                 return
             }
-            print(json)
-            //let resultString = (json as AnyObject).description
+
             
             let jsonArray = json as! NSArray
             
@@ -100,13 +72,11 @@ class InstrumentationViewController: UIViewController, UITableViewDelegate, UITa
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //navigationController?.isNavigationBarHidden = false
         
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -121,27 +91,12 @@ class InstrumentationViewController: UIViewController, UITableViewDelegate, UITa
         let identifier = "basic"
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
         let label = cell.contentView.subviews.first as! UILabel
-        //label.text = data[indexPath.section][indexPath.item]
-        
+
         label.text = gridTitles[indexPath.item]
         
         return cell
     }
     
-//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        
-//        return sectionHeaders[section]
-//    }
-    
-//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-//        if editingStyle == .delete {
-//            var newData = data[indexPath.section]
-//            newData.remove(at: indexPath.row)
-//            data[indexPath.section] = newData
-//            tableView.deleteRows(at: [indexPath], with: .automatic)
-//            tableView.reloadData()
-//        }
-//    }
 
     @IBAction func time_refresh(_ sender: UISlider) {
         if refreshSwitch.isOn {
@@ -176,22 +131,20 @@ class InstrumentationViewController: UIViewController, UITableViewDelegate, UITa
         
     }
     
-    
     override func prepare(for seque: UIStoryboardSegue, sender: Any?) {
         let indexPath = tableview.indexPathForSelectedRow
         if let indexPath = indexPath {
             let loadGrid = gridAlives[indexPath.row]
+
             let loadName = gridTitles[indexPath.row]
             let loadSize = gridSizes[indexPath.row]
             
             if let vc = seque.destination as? GridEditorViewController {
-                
-                vc.saveClosure = { newValue in
-                    vc.loadGrid = loadGrid
-                    vc.loadName = loadName
-                    vc.loadSize = loadSize
-                    vc.tableRow = indexPath.row
-                }
+            
+                vc.loadGrid = loadGrid
+                vc.loadName = loadName
+                vc.loadSize = loadSize
+                vc.tableRow = indexPath.row
             }
         }
         }

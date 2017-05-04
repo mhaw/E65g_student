@@ -15,15 +15,18 @@ class SimulationViewController: UIViewController, GridViewDataSource, EngineDele
     
     @IBOutlet weak var gridView: GridView!
     
-    var engine: EngineProtocol!
+    var engine: EngineProtocol! = StandardEngine.engine
     var timer: Timer?
+    
+    
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
-        engine = StandardEngine.engine
+        gridView.setNeedsDisplay()
+        
+        //engine = StandardEngine.engine
         engine.delegate = self
         gridView.gridDataSource = self
         gridView.gridSize = engine.grid.size.cols
@@ -68,11 +71,14 @@ class SimulationViewController: UIViewController, GridViewDataSource, EngineDele
                     let size = self.engine.grid.size.cols
                     
                     let savedState = UserDefaults.standard
-                    savedState.setValue(name, forKey: "savedName")
-                    savedState.setValue(cellpositions, forKey: "savedGrid")
-                    savedState.setValue(size, forKey: "savedSize")
+                    savedState.set(name, forKey: "savedName")
+                    savedState.set(cellpositions, forKey: "savedGrid")
+                    savedState.set(size, forKey: "savedSize")
                     
+                    print(name)
                     print(cellpositions)
+                    
+                    savedState.synchronize()
                 }
                 
             
