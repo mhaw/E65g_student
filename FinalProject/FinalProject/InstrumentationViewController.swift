@@ -128,11 +128,36 @@ class InstrumentationViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     @IBAction func add(_ sender: Any) {
-        //prompt for new name
+        let nameEntry = UIAlertController(title:"Enter new grid name:", message: nil, preferredStyle: .alert)
         
-        //add name to table view
+        let save = UIAlertAction(title: "Save", style: .default) { (_) in
+            if let new_name = nameEntry.textFields?[0] {
+                if let name = new_name.text {
+                    let blankGrid: [[Int]] = []
+                    self.gridTitles.append(name)
+                    self.gridAlives.append(blankGrid)
+                    self.gridSizes.append(20)
+                    self.tableview.reloadData()
+                }
+            }
+            
+        }
+
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (_) in
+            
+        }
         
-        //send blank grid to editor
+        nameEntry.addTextField { textentry in
+            textentry.placeholder = "Grid Name"
+        }
+        
+        nameEntry.addAction(save)
+        nameEntry.addAction(cancel)
+        
+        present(nameEntry, animated: true)
+        
+        self.self.tableview.reloadData()
+
     }
     
     override func prepare(for seque: UIStoryboardSegue, sender: Any?) {
