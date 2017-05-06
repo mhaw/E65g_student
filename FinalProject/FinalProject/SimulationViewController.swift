@@ -26,7 +26,6 @@ class SimulationViewController: UIViewController, GridViewDataSource, EngineDele
         
         gridView.setNeedsDisplay()
         
-        //engine = StandardEngine.engine
         engine.delegate = self
         gridView.gridDataSource = self
         gridView.gridSize = engine.grid.size.cols
@@ -58,7 +57,7 @@ class SimulationViewController: UIViewController, GridViewDataSource, EngineDele
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+
     }
     
     @IBAction func save(_ sender: Any) {

@@ -275,7 +275,7 @@ public class StandardEngine: EngineProtocol {
         }
         
         StandardEngine.engine.grid = startingGrid
-        updateClosure?(startingGrid as! Grid)
+        updateClosure?(startingGrid)
         delegate?.engineDidUpdate(withGrid: startingGrid)
         self.notify()
     }

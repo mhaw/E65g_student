@@ -128,7 +128,11 @@ class InstrumentationViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     @IBAction func add(_ sender: Any) {
+        //prompt for new name
         
+        //add name to table view
+        
+        //send blank grid to editor
     }
     
     override func prepare(for seque: UIStoryboardSegue, sender: Any?) {
@@ -145,8 +149,24 @@ class InstrumentationViewController: UIViewController, UITableViewDelegate, UITa
                 vc.loadName = loadName
                 vc.loadSize = loadSize
                 vc.tableRow = indexPath.row
+                
+                vc.saveNewClosure = { name, cellpositions, size in
+                    self.gridTitles.append(name as String)
+                    self.gridAlives.append(cellpositions)
+                    self.gridSizes.append(size)
+                    self.tableview.reloadData()
+                }
+                    
+                vc.saveClosure = { name, cellpositions, size, row in
+                    self.gridTitles[row] = name
+                    self.gridAlives[row] = cellpositions
+                    self.gridSizes[row] = size
+                    self.tableview.reloadData()
+
+                }
             }
         }
+
         }
 
 }

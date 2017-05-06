@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Foundation
 
 class GridEditorViewController: UIViewController, GridViewDataSource, EngineDelegate {
     
@@ -15,14 +16,20 @@ class GridEditorViewController: UIViewController, GridViewDataSource, EngineDele
     var loadName: String = ""
     var loadSize: Int = 0
     var tableRow: Int = 0
-    var saveClosure: ((GridView) -> Void)?
     
+    var saveClosure: ((String, [[Int]], Int, Int) -> Void)?
+    var saveNewClosure: ((String, [[Int]], Int) -> Void)?
+    
+
     var editEngine : StandardEngine = StandardEngine.engine
     
     @IBOutlet weak var editGridView: GridView!
+    @IBOutlet weak var gridName: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        gridName.text = loadName
         
         print (loadGrid)
         
@@ -33,27 +40,66 @@ class GridEditorViewController: UIViewController, GridViewDataSource, EngineDele
         editEngine.delegate = self
         self.editGridView.gridSize = 10+loadSize
         self.editGridView.gridDataSource = (editEngine.grid as! GridViewDataSource)
+        
+        
 
         self.editGridView.setNeedsDisplay()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func engineDidUpdate(withGrid: GridProtocol) {
         self.editGridView.setNeedsDisplay()
     }
     
-    @IBAction func save(_ sender: GridView) {
-        //if let newValue = grid_array {
-            //let saveClosure = self.saveClosure {
-            //self.saveClosure(newValue)
-            //self.navigationController?.popViewController(animated: true)
-        //}
+    @IBAction func save(_ sender: Any) {
+            let name = loadName
+            let cellpositions = self.editGridView.countAlive()
+            let size = self.editGridView.gridSize
+            let row = tableRow
+            
+            self.saveClosure!(name, cellpositions, size, row)
+
+        
+    self.navigationController?.popViewController(animated: true)
+
     }
 
+    @IBAction func saveNew(_ sender: Any) {
+        
+            let nameEntry = UIAlertController(title:"Enter new grid name:", message: nil, preferredStyle: .alert)
+            
+            let save = UIAlertAction(title: "Save", style: .default) { (_) in
+                if let new_name = nameEntry.textFields?[0] {
+                    if let name = new_name.text {
+                        self.gridName.text = name
+                        let cellpositions = self.editGridView.countAlive()
+                        let size = self.editGridView.gridSize
+                        
+                        self.self.saveNewClosure!(name, cellpositions, size)
+                    }
+                }
+            self.navigationController?.popViewController(animated: true)
+        
+        }
+        
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (_) in
+            
+        }
+        
+        nameEntry.addTextField { textentry in
+            textentry.placeholder = "Grid Name"
+        }
+        
+        nameEntry.addAction(save)
+        nameEntry.addAction(cancel)
+        
+        present(nameEntry, animated: true)
+        
+    }
     
     @IBOutlet weak var grid_edit: GridView!
     
@@ -63,14 +109,5 @@ class GridEditorViewController: UIViewController, GridViewDataSource, EngineDele
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
