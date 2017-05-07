@@ -80,8 +80,6 @@ class SimulationViewController: UIViewController, GridViewDataSource, EngineDele
                     savedState.synchronize()
                 }
                 
-            
-                
             }
         }
         

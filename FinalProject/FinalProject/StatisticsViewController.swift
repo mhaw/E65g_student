@@ -83,9 +83,7 @@ class StatisticsViewController: UIViewController, EngineDelegate {
                     self.viewDidLoad()
                     
         }
-        
-        
-        
+          
     }
     
     func engineDidUpdate(withGrid: GridProtocol){

@@ -96,16 +96,23 @@ public protocol GridViewDataSource {
     var lastTouchedPosition: GridPosition?
     
     func process(touches: Set<UITouch>) -> GridPosition? {
+
+        let touchY = touches.first!.location(in: self.superview).y
+        let touchX = touches.first!.location(in: self.superview).x
+        guard touchX > frame.origin.x && touchX < (frame.origin.x + frame.size.width) else { return nil }
+        guard touchY > frame.origin.y && touchY < (frame.origin.y + frame.size.height) else { return nil }
+        
         guard touches.count == 1 else { return nil }
         let pos = convert(touch: touches.first!)
+        
+        //************* IMPORTANT ****************
         guard lastTouchedPosition?.row != pos.row
             || lastTouchedPosition?.col != pos.col
             else { return pos }
+        //****************************************
         
-        let r = pos.row
-        let c = pos.col
-        
-        StandardEngine.engine.grid[r, c] = StandardEngine.engine.grid[r, c].isAlive ? .empty : .alive
+
+        StandardEngine.engine.grid[pos.row, pos.col] = StandardEngine.engine.grid[pos.row, pos.col].isAlive ? .empty : .alive
         setNeedsDisplay()
         return pos
     }

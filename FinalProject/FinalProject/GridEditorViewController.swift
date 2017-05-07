@@ -25,7 +25,8 @@ class GridEditorViewController: UIViewController, GridViewDataSource, EngineDele
     
     @IBOutlet weak var editGridView: GridView!
     @IBOutlet weak var gridName: UILabel!
-
+    @IBOutlet weak var grid_edit: GridView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -40,8 +41,6 @@ class GridEditorViewController: UIViewController, GridViewDataSource, EngineDele
         editEngine.delegate = self
         self.editGridView.gridSize = 10+loadSize
         self.editGridView.gridDataSource = (editEngine.grid as! GridViewDataSource)
-        
-        
 
         self.editGridView.setNeedsDisplay()
     }
@@ -57,7 +56,8 @@ class GridEditorViewController: UIViewController, GridViewDataSource, EngineDele
     @IBAction func save(_ sender: Any) {
             let name = loadName
             let cellpositions = self.editGridView.countAlive()
-            let size = self.editGridView.gridSize
+        //subracting ten to normalize the saved value, since adding 10 when entering editor
+            let size = self.editGridView.gridSize-10
             let row = tableRow
             
             self.saveClosure!(name, cellpositions, size, row)
@@ -76,7 +76,7 @@ class GridEditorViewController: UIViewController, GridViewDataSource, EngineDele
                     if let name = new_name.text {
                         self.gridName.text = name
                         let cellpositions = self.editGridView.countAlive()
-                        let size = self.editGridView.gridSize
+                        let size = self.editGridView.gridSize-10
                         
                         self.self.saveNewClosure!(name, cellpositions, size)
                     }
@@ -84,7 +84,6 @@ class GridEditorViewController: UIViewController, GridViewDataSource, EngineDele
             self.navigationController?.popViewController(animated: true)
         
         }
-        
         
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (_) in
             
@@ -101,8 +100,7 @@ class GridEditorViewController: UIViewController, GridViewDataSource, EngineDele
         
     }
     
-    @IBOutlet weak var grid_edit: GridView!
-    
+   
     public subscript(row: Int, col: Int) -> CellState {
         get { return editEngine.grid[row,col] }
         set { editEngine.grid[row,col] = newValue }
