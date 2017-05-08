@@ -48,7 +48,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
                                         <subviews>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="42" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="cDe-2q-Dza">
-                                                <rect key="frame" x="0.0" y="0.0" width="320" height="221"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="320" height="220.5"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <color key="separatorColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <prototypes>
@@ -79,10 +79,10 @@
                                                 </connections>
                                             </tableView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Djz-lC-WXR" userLabel="Controls">
-                                                <rect key="frame" x="0.0" y="221" width="320" height="234"/>
+                                                <rect key="frame" x="0.0" y="220.5" width="320" height="234.5"/>
                                                 <subviews>
                                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.10000000000000001" minValue="0.10000000000000001" maxValue="10" translatesAutoresizingMaskIntoConstraints="NO" id="Pk2-fI-nNV">
-                                                        <rect key="frame" x="141.5" y="112" width="138.5" height="31"/>
+                                                        <rect key="frame" x="141.5" y="112.5" width="138.5" height="31"/>
                                                     </slider>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="88Z-Gg-VUG">
                                                         <rect key="frame" x="30" y="41.5" width="118" height="30"/>
@@ -97,7 +97,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="10" minimumValue="10" maximumValue="100" stepValue="10" translatesAutoresizingMaskIntoConstraints="NO" id="RWQ-Uw-Qbi">
-                                                        <rect key="frame" x="156" y="68" width="94" height="29"/>
+                                                        <rect key="frame" x="156" y="68.5" width="94" height="29"/>
                                                         <connections>
                                                             <action selector="grid_stepper:" destination="9pv-A4-QxB" eventType="valueChanged" id="jNq-u6-pLk"/>
                                                         </connections>
@@ -115,7 +115,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="05X-sE-srv">
-                                                        <rect key="frame" x="200" y="195" width="51" height="31"/>
+                                                        <rect key="frame" x="200" y="195.5" width="51" height="31"/>
                                                         <connections>
                                                             <action selector="time_refresh:" destination="9pv-A4-QxB" eventType="valueChanged" id="6OO-Xc-4ak"/>
                                                         </connections>
@@ -198,14 +198,14 @@
                                 <rect key="frame" x="0.0" y="64" width="320" height="408"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qE5-uH-4xn" customClass="GridView" customModule="FinalProject" customModuleProvider="target">
-                                        <rect key="frame" x="32" y="75.5" width="256" height="256"/>
+                                        <rect key="frame" x="32.5" y="75.5" width="255.5" height="256"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="qE5-uH-4xn" secondAttribute="height" multiplier="1:1" id="2jA-Uu-Wu1"/>
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Svu-3b-k1z">
-                                        <rect key="frame" x="133" y="44" width="54" height="27"/>
+                                        <rect key="frame" x="133" y="44.5" width="54" height="27"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -282,7 +282,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="475"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pn2-Nb-ZVX" customClass="GridView" customModule="FinalProject" customModuleProvider="target">
-                                        <rect key="frame" x="32" y="109" width="256" height="256"/>
+                                        <rect key="frame" x="32.5" y="109.5" width="255.5" height="255.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="Pn2-Nb-ZVX" secondAttribute="height" multiplier="1:1" id="GDK-UV-7Vx"/>

@@ -24,8 +24,6 @@ class StatisticsViewController: UIViewController, EngineDelegate {
     
     var engine: EngineProtocol = StandardEngine.engine
     
-
-    
     private func statCount() {
         engine = StandardEngine.engine
         resetCount()
@@ -50,7 +48,6 @@ class StatisticsViewController: UIViewController, EngineDelegate {
         alive_label.text = String(alive_count)
     }
     
-
     private func resetCount() {
         alive_count = 0
         born_count = 0
@@ -81,7 +78,6 @@ class StatisticsViewController: UIViewController, EngineDelegate {
                     self.statCount()
                     self.displayCount()
                     self.viewDidLoad()
-                    
         }
           
     }
@@ -97,7 +93,5 @@ class StatisticsViewController: UIViewController, EngineDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-
 }
 

@@ -18,9 +18,6 @@ class SimulationViewController: UIViewController, GridViewDataSource, EngineDele
     var engine: EngineProtocol! = StandardEngine.engine
     var timer: Timer?
     
-    
-    
-
     override func viewDidLoad() {
         super.viewDidLoad()
         

@@ -20,7 +20,6 @@ class GridEditorViewController: UIViewController, GridViewDataSource, EngineDele
     var saveClosure: ((String, [[Int]], Int, Int) -> Void)?
     var saveNewClosure: ((String, [[Int]], Int) -> Void)?
     
-
     var editEngine : StandardEngine = StandardEngine.engine
     
     @IBOutlet weak var editGridView: GridView!
@@ -100,12 +99,9 @@ class GridEditorViewController: UIViewController, GridViewDataSource, EngineDele
         
     }
     
-   
     public subscript(row: Int, col: Int) -> CellState {
         get { return editEngine.grid[row,col] }
         set { editEngine.grid[row,col] = newValue }
     }
-    
-
 
 }
